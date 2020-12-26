@@ -9,6 +9,10 @@
     "lint": "npx eslint ./src || exit 0",
     "lint:fix": "npx eslint ./src --fix || exit 0"
   },
+  "repository": {
+    "type": "git",
+    "url": "git@gitlab.lnu.se:1dv026/student/mh223pi/assignment-a2-the-gathering-web-scraper.git"
+  },
   "contributors": [
     "Maja Hedegärd <mh223pi@student.lnu.se>"
   ],
