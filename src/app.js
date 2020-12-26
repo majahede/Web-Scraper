@@ -1,1 +1,4 @@
-console.log('hej')
+
+import { scraper } from './scraper.js'
+
+scraper()
