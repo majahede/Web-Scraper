@@ -29,12 +29,11 @@ const main = async () => {
     days.push(calendardays)
   }
   const daysFlatened = days.flat()
-  const countOccurrences = (arr, val) => arr.reduce((a, v) => (v === val ? a + 1 : a), 0)
+  const countOccurrences = (arr, value) => arr.reduce((a, v) => (v === value ? a + 1 : a), 0)
   const filteredDays = daysFlatened.filter(day => countOccurrences(daysFlatened, day) === personalCalendar.length)
   const availableDays = [...new Set(filteredDays)]
   console.log('Scraping available days...OK')
   movies()
-  login()
 }
 
 main()

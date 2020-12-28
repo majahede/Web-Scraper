@@ -11,5 +11,5 @@ export async function login () {
   const text = await response.text()
   const dom = new JSDOM(text)
   const form = dom.window.document.querySelector('form')
-  console.log('loginpage' + form)
+  //console.log('loginpage' + form)
 }
