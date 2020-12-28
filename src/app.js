@@ -2,6 +2,7 @@
 import { LinkScraper } from './linkScraper.js'
 import { CalendarScraper } from './calendar.js'
 import { movies } from './movies.js'
+import { login } from './login.js'
 
 // import { scraper2 } from './linkScraper2.js'
 /**
@@ -32,6 +33,8 @@ const main = async () => {
   const filteredDays = daysFlatened.filter(day => countOccurrences(daysFlatened, day) === personalCalendar.length)
   const availableDays = [...new Set(filteredDays)]
   console.log('Scraping available days...OK')
+  movies()
+  login()
 }
 
 main()
