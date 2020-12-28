@@ -20,7 +20,6 @@ export class LinkScraper {
 
     const links = Array.from(dom.window.document.querySelectorAll('a'))
       .map(aElement => aElement.href)
-
     return links
   }
 

@@ -20,8 +20,17 @@ export class CalendarScraper {
 
     const links = Array.from(dom.window.document.querySelectorAll('body > table > tbody > tr > td'))
       .map(e => e.textContent)
-
-    return links
+    if (links[0] === 'ok' || links[0] === 'OK') {
+      links[0] = 'Friday'
+    }
+    if (links[1] === 'ok' || links[1] === 'OK') {
+      links[1] = 'Saturday'
+    }
+    if (links[2] === 'ok' || links[2] === 'OK') {
+      links[2] = 'Sunday'
+    }
+    const filteredlinks = links.filter(word => word.includes('day'))
+    return filteredlinks
   }
 
   /**
@@ -35,23 +44,3 @@ export class CalendarScraper {
     return response.text()
   }
 }
-
-/**
- * Extracts links from page.
- *
- * @param {string} calendar - the page to extract links from
- *
- */
-/*
-export async function calendarScraper (calendar) {
-  let days = []
-  const response = await fetch(calendar)
-  const text = await response.text()
-  const dom = new JSDOM(text)
-  const links = Array.from(dom.window.document.querySelectorAll('body > table > tbody > tr > td'))
-  for (let i = 0; i < links.length; i++) {
-    days.push(links[i].textContent)
-  }
-  return days
-}
-*/
