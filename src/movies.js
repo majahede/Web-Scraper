@@ -2,11 +2,9 @@ import fetch from 'node-fetch'
 import jsdom from 'jsdom'
 const { JSDOM } = jsdom
 
-
 /**
- * Extracts links from page.
+ * Get available movies.
  *
- * @param {string} url - the page to extract links from
  */
 export async function movies () {
   const response = await fetch('https://cscloud6-127.lnu.se/scraper-site-1/cinema')

@@ -33,7 +33,8 @@ const main = async () => {
   const filteredDays = daysFlatened.filter(day => countOccurrences(daysFlatened, day) === personalCalendar.length)
   const availableDays = [...new Set(filteredDays)]
   console.log('Scraping available days...OK')
-  movies()
+  await movies()
+  await login()
 }
 
 main()

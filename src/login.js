@@ -2,14 +2,54 @@ import fetch from 'node-fetch'
 import jsdom from 'jsdom'
 const { JSDOM } = jsdom
 /**
- * Extracts links from page.
+ * Log in to page.
  *
- * @param {string} url - the page to extract links from
  */
 export async function login () {
-  const response = await fetch('https://cscloud6-127.lnu.se/scraper-site-1/dinner/')
+  const data = new URLSearchParams({
+    username: 'zeke',
+    password: 'coys',
+    submit: 'login'
+  })
+
+  const url = 'https://cscloud6-127.lnu.se/scraper-site-1/dinner/'
+
+  const response = await fetch(url)
   const text = await response.text()
   const dom = new JSDOM(text)
-  const form = dom.window.document.querySelector('form')
-  //console.log('loginpage' + form)
+  const form = dom.window.document.querySelector('body > div > form')
+
+  const login = await fetch(`${url}${form.action}`, {
+    method: 'post',
+    redirect: 'manual',
+    body: data,
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    },
+    credentials: 'same-origin'
+  })
+
+  const getURL = await fetch(`${url}${form.action}`, {
+    method: 'post',
+    body: data,
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    }
+  })
+  const bookingURL = getURL.url
+
+  const headers = login.headers
+  const cookieheader = headers.get('Set-Cookie')
+  const splitedcookie = cookieheader.split(';')
+  const cookie = splitedcookie[0]
+
+  const booking = await fetch(bookingURL, {
+    headers: {
+      cookie: cookie
+    }
+  })
+  const bookingtext = await booking.text()
+  const domm = new JSDOM(bookingtext)
+  const dine = domm.window.document.querySelector('body > form > div.WordSection1 > p:nth-child(10) > b > span')
+  console.log(dine)
 }
