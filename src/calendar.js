@@ -1,10 +1,11 @@
 import fetch from 'node-fetch'
 import jsdom from 'jsdom'
 const { JSDOM } = jsdom
-// const url = 'https://cscloud6-127.lnu.se/scraper-site-1/'
 
 /**
  * Encapsulates a calendar scraper.
+ *
+ * @class
  */
 export class CalendarScraper {
   /**
@@ -13,24 +14,57 @@ export class CalendarScraper {
    * @param {string} url - The URL of the web page to scrape.
    * @returns {string[]} The unique and absolute links.
    */
-  async extractLinks (url) {
+  async extractDays (url) {
     const text = await this._getText(url)
 
     const dom = new JSDOM(text)
 
-    const links = Array.from(dom.window.document.querySelectorAll('body > table > tbody > tr > td'))
+    const days = Array.from(dom.window.document.querySelectorAll('body > table > tbody > tr > td'))
       .map(e => e.textContent)
-    if (links[0] === 'ok' || links[0] === 'OK') {
-      links[0] = 'Friday'
+    if (days[0] === 'ok' || days[0] === 'OK' || days[0] === 'oK') {
+      days[0] = 'Friday'
     }
-    if (links[1] === 'ok' || links[1] === 'OK') {
-      links[1] = 'Saturday'
+    if (days[1] === 'ok' || days[1] === 'OK' || days[1] === 'oK') {
+      days[1] = 'Saturday'
     }
-    if (links[2] === 'ok' || links[2] === 'OK') {
-      links[2] = 'Sunday'
+    if (days[2] === 'ok' || days[2] === 'OK' || days[2] === 'oK') {
+      days[2] = 'Sunday'
     }
-    const filteredlinks = links.filter(word => word.includes('day'))
-    return filteredlinks
+    const filteredDays = days.filter(word => word.includes('day'))
+    return filteredDays
+  }
+
+  /**
+   * Extracts the links on a web page.
+   *
+   * @param {Array} calendars - An array of links to calendars.
+   * @returns {string[]} The days that are available for everyone.
+   */
+  async getAvailableDays (calendars) {
+    const days = []
+    for (let i = 0; i < calendars.length; i++) {
+      const calendarDays = await this.extractDays(calendars[i])
+      days.push(calendarDays)
+    }
+    const daysFlatened = days.flat()
+
+    /**
+     * Check how many times a value of an array occurs.
+     *
+     * @param {Array} arr - The array to analyze.
+     * @param {string} value - The value to count the occurancy of.
+     * @returns {string[]} - The occurances of the values in the Array.
+     */
+    const countOccurrences = (arr, value) => arr.reduce((a, v) => (v === value ? a + 1 : a), 0)
+
+    // Check which days are avaialable for everyone.
+    const filteredDays = daysFlatened.filter(day => countOccurrences(daysFlatened, day) === calendars.length)
+    const availableDays = [...new Set(filteredDays)]
+    const daysNumbered = {}
+    for (let i = 0; i < availableDays.length; i++) {
+      daysNumbered[availableDays[i]] = '0' + (i + 5)
+    }
+    return daysNumbered
   }
 
   /**

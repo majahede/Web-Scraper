@@ -1,8 +1,9 @@
 
 import { LinkScraper } from './linkScraper.js'
 import { CalendarScraper } from './calendar.js'
-import { movies } from './movies.js'
+import { MovieScraper } from './movies.js'
 import { login } from './login.js'
+// import { getProposals } from './getProposals.js'
 
 // import { scraper2 } from './linkScraper2.js'
 /**
@@ -10,30 +11,30 @@ import { login } from './login.js'
  */
 const main = async () => {
   // const url = process.argv[2]
-  // get starting links
+
+  // get links to the calendar, the cinema and the dinner reservation.
   const linkscraper = new LinkScraper()
-  const startingLinks = await linkscraper.extractLinks('https://cscloud6-127.lnu.se/scraper-site-1/')
+  const startingLinks = await linkscraper.extractLinks('https://cscloud6-127.lnu.se/scraper-site-2/')
   console.log('Scraping links...OK')
 
-  // get calendar links
+  // get links to calendars.
   const calendarLinks = await linkscraper.extractLinks(startingLinks[0])
   const personalCalendar = [] // links to calendars
   calendarLinks.forEach(link => {
     // Get absolute path  for calendars, push to array
     personalCalendar.push(startingLinks[0] + link.substring(2))
   })
-  const days = []
+
   const calendarscraper = new CalendarScraper()
-  for (let i = 0; i < personalCalendar.length; i++) {
-    const calendardays = await calendarscraper.extractLinks(personalCalendar[i])
-    days.push(calendardays)
-  }
-  const daysFlatened = days.flat()
-  const countOccurrences = (arr, value) => arr.reduce((a, v) => (v === value ? a + 1 : a), 0)
-  const filteredDays = daysFlatened.filter(day => countOccurrences(daysFlatened, day) === personalCalendar.length)
-  const availableDays = [...new Set(filteredDays)]
+  const availableDays = await calendarscraper.getAvailableDays(personalCalendar) //
   console.log('Scraping available days...OK')
-  await movies()
+  console.log(availableDays)
+
+  const moviescraper = new MovieScraper()
+
+  const movies = await moviescraper.extractMovies(startingLinks[1])
+  const showtimes = await moviescraper.getShowtimes(startingLinks[1], availableDays, movies)
+  console.log(showtimes)
   await login()
 }
 

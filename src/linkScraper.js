@@ -1,7 +1,6 @@
 import fetch from 'node-fetch'
 import jsdom from 'jsdom'
 const { JSDOM } = jsdom
-// const url = 'https://cscloud6-127.lnu.se/scraper-site-1/'
 
 /**
  * Encapsulates a link scraper.

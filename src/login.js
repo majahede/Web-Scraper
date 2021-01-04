@@ -48,8 +48,10 @@ export async function login () {
       cookie: cookie
     }
   })
+  const availableTables = []
   const bookingtext = await booking.text()
   const domm = new JSDOM(bookingtext)
-  const dine = domm.window.document.querySelector('body > form > div.WordSection1 > p:nth-child(10) > b > span')
-  console.log(dine)
+  const dine = Array.from(domm.window.document.querySelectorAll('input[type=radio]'))
+  dine.forEach(a => availableTables.push(a.value))
+  console.log(availableTables[0])
 }
