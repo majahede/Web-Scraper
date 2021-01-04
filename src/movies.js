@@ -39,16 +39,16 @@ export class MovieScraper {
   async getShowtimes (url, days, movies) {
     const showTimes = []
     const dayNumbers = Object.keys(days).map(key => days[key])
+    let movieInfo = []
 
     for (let i = 0; i < dayNumbers.length; i++) { // for every available day
       for (let j = 0; j < movies.length; j++) { // get the movietimes for each movie
         const availableMovies = await fetch(`${url}/check?day=${dayNumbers[i]}&movie=${'0' + (j + 1)}`)
-        const movieTimes = await availableMovies.json()
-        showTimes.push(movies[j])
-        const availableTimes = movieTimes.filter(movie => movie.status === 1)
-        availableTimes.forEach(a => showTimes.push((parseInt(a.time))))
+        movieInfo = await availableMovies.json()
+        const availableTimes = movieInfo.filter(movie => movie.status === 1)
+        showTimes.push(availableTimes)
       }
     }
-    return showTimes
+    return showTimes.flat()
   }
 }

@@ -62,7 +62,13 @@ export class CalendarScraper {
     const availableDays = [...new Set(filteredDays)]
     const daysNumbered = {}
     for (let i = 0; i < availableDays.length; i++) {
-      daysNumbered[availableDays[i]] = '0' + (i + 5)
+      if (availableDays[i] === 'Friday') {
+        daysNumbered[availableDays[i]] = '05'
+      } else if (availableDays[i] === 'Saturday') {
+        daysNumbered[availableDays[i]] = '06'
+      } else if (availableDays[i] === 'Sunday') {
+        daysNumbered[availableDays[i]] = '07'
+      }
     }
     return daysNumbered
   }

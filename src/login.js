@@ -5,14 +5,12 @@ const { JSDOM } = jsdom
  * Log in to page.
  *
  */
-export async function login () {
+export async function login (url) {
   const data = new URLSearchParams({
     username: 'zeke',
     password: 'coys',
     submit: 'login'
   })
-
-  const url = 'https://cscloud6-127.lnu.se/scraper-site-1/dinner/'
 
   const response = await fetch(url)
   const text = await response.text()
@@ -53,5 +51,5 @@ export async function login () {
   const domm = new JSDOM(bookingtext)
   const dine = Array.from(domm.window.document.querySelectorAll('input[type=radio]'))
   dine.forEach(a => availableTables.push(a.value))
-  console.log(availableTables[0])
+  return availableTables
 }
