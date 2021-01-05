@@ -34,7 +34,7 @@ export class MovieScraper {
    * @param {string} url - The URL of the web page to scrape.
    * @param {object} days - The object of available days.
    * @param {Array} movies - The array of movies shown at the cinema.
-   * @returns {Array} - An.
+   * @returns {Array} - An array of showtimes.
    */
   async getShowtimes (url, days, movies) {
     const showTimes = []

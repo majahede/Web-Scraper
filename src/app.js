@@ -4,9 +4,7 @@ import { CalendarScraper } from './calendar.js'
 import { MovieScraper } from './movies.js'
 import { login } from './login.js'
 import { proposal } from './proposal.js'
-// import { getProposals } from './getProposals.js'
 
-// import { scraper2 } from './linkScraper2.js'
 /**
  * Starts the applikation.
  */

@@ -2,8 +2,10 @@ import fetch from 'node-fetch'
 import jsdom from 'jsdom'
 const { JSDOM } = jsdom
 /**
- * Log in to page.
+ * Log in to reservation page and get available tables.
  *
+ * @param {string} url - The URL of the web page to scrape.
+ * @returns {Array} - An array of available tables.
  */
 export async function login (url) {
   const data = new URLSearchParams({
@@ -17,6 +19,7 @@ export async function login (url) {
   const dom = new JSDOM(text)
   const form = dom.window.document.querySelector('body > div > form')
 
+  // Manage redirect.
   const login = await fetch(`${url}${form.action}`, {
     method: 'post',
     redirect: 'manual',
@@ -27,6 +30,7 @@ export async function login (url) {
     credentials: 'same-origin'
   })
 
+  // Get destianion URL.
   const getURL = await fetch(`${url}${form.action}`, {
     method: 'post',
     body: data,
@@ -34,8 +38,10 @@ export async function login (url) {
       'Content-Type': 'application/x-www-form-urlencoded'
     }
   })
+
   const bookingURL = getURL.url
 
+  // Get cookie.
   const headers = login.headers
   const cookieheader = headers.get('Set-Cookie')
   const splitedcookie = cookieheader.split(';')
@@ -46,6 +52,8 @@ export async function login (url) {
       cookie: cookie
     }
   })
+
+  // Get available tables from booking page.
   const availableTables = []
   const bookingtext = await booking.text()
   const domm = new JSDOM(bookingtext)
