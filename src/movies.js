@@ -29,12 +29,12 @@ export class MovieScraper {
   }
 
   /**
-   * Extract list of movies shown at the cinema.
+   * Gets information about the available movies at the cinema.
    *
    * @param {string} url - The URL of the web page to scrape.
    * @param {object} days - The object of available days.
-   * @param {Array} movies - The array of movies shown at the cinema.
-   * @returns {Array} - An array of showtimes.
+   * @param {Array} movies - The movies shown at the cinema.
+   * @returns {Array} - Information about the available movies.
    */
   async getShowtimes (url, days, movies) {
     const showTimes = []

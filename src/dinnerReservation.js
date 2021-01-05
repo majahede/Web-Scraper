@@ -2,12 +2,12 @@ import fetch from 'node-fetch'
 import jsdom from 'jsdom'
 const { JSDOM } = jsdom
 /**
- * Log in to reservation page and get available tables.
+ * Log in to restaurant reservation page and get available tables.
  *
  * @param {string} url - The URL of the web page to scrape.
  * @returns {Array} - An array of available tables.
  */
-export async function login (url) {
+export async function dinnerReservation (url) {
   const data = new URLSearchParams({
     username: 'zeke',
     password: 'coys',
@@ -47,6 +47,7 @@ export async function login (url) {
   const splitedcookie = cookieheader.split(';')
   const cookie = splitedcookie[0]
 
+  // Set cookie.
   const booking = await fetch(bookingURL, {
     headers: {
       cookie: cookie
@@ -56,8 +57,8 @@ export async function login (url) {
   // Get available tables from booking page.
   const availableTables = []
   const bookingtext = await booking.text()
-  const domm = new JSDOM(bookingtext)
-  const dine = Array.from(domm.window.document.querySelectorAll('input[type=radio]'))
-  dine.forEach(a => availableTables.push(a.value))
+  const restaurant = new JSDOM(bookingtext)
+  const dinnerTables = Array.from(restaurant.window.document.querySelectorAll('input[type=radio]'))
+  dinnerTables.forEach(a => availableTables.push(a.value))
   return availableTables
 }

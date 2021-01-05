@@ -51,6 +51,8 @@ export class CalendarScraper {
     // Check which days are avaialable for everyone.
     const filteredDays = daysFlatened.filter(day => this.countOccurrences(daysFlatened, day) === calendars.length)
     const availableDays = [...new Set(filteredDays)]
+
+    // Set number to each available day.
     const daysNumbered = {}
     for (let i = 0; i < availableDays.length; i++) {
       if (availableDays[i] === 'Friday') {

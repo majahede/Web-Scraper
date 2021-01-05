@@ -7,10 +7,10 @@ const { JSDOM } = jsdom
  */
 export class LinkScraper {
   /**
-   * Extracts the links on a web page.
+   * Extracts the anchor elements from a web page.
    *
    * @param {string} url - The URL of the web page to scrape.
-   * @returns {string[]} The unique and absolute links.
+   * @returns {Array} The links from a web page.
    */
   async extractLinks (url) {
     const text = await this._getText(url)

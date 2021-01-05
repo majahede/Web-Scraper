@@ -20,8 +20,7 @@
   "private": true,
   "dependencies": {
     "jsdom": "^16.4.0",
-    "node-fetch": "^2.6.1",
-    "validator": "^13.1.17"
+    "node-fetch": "^2.6.1"
   },
   "devDependencies": {
     "@lnu/eslint-config": "^1.1.2",

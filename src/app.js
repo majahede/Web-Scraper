@@ -2,7 +2,7 @@
 import { LinkScraper } from './linkScraper.js'
 import { CalendarScraper } from './calendar.js'
 import { MovieScraper } from './movies.js'
-import { login } from './login.js'
+import { dinnerReservation } from './dinnerReservation.js'
 import { suggestions } from './suggestions.js'
 
 /**
@@ -35,7 +35,7 @@ const main = async () => {
     const showtimes = await moviescraper.getShowtimes(startingLinks[1], availableDays, movies)
     console.log('Scraping showtimes...OK')
 
-    const tables = await login(startingLinks[2])
+    const tables = await dinnerReservation(startingLinks[2])
     console.log('Scraping possible reservations...OK')
 
     console.log('\nSuggestions\n=========== ')
