@@ -29,7 +29,7 @@ export function suggestions (days, movies, showtimes, tables) {
       if (show.day === days[availableDay]) {
         availableTables.forEach(table => {
           if (parseInt(table.time) >= parseInt(show.time) + 2) {
-            console.log(`* On ${availableDay} "${moviesNumbered[show.movie]}" begins at ${show.time} and there is a free table to book between ${table.time}:00-${parseInt(table.time) + 2}:00.`)
+            console.log(`* On ${availableDay}, "${moviesNumbered[show.movie]}" begins at ${show.time}, and there is a free table to book between ${table.time}:00-${parseInt(table.time) + 2}:00.`)
           }
         })
       }
