@@ -9,10 +9,10 @@ const { JSDOM } = jsdom
  */
 export class CalendarScraper {
   /**
-   * Extracts the links on a web page.
+   * Extracts the available days from a calendar.
    *
    * @param {string} url - The URL of the web page to scrape.
-   * @returns {string[]} The unique and absolute links.
+   * @returns {Array} - The available days.
    */
   async extractDays (url) {
     const text = await this._getText(url)
@@ -21,13 +21,13 @@ export class CalendarScraper {
 
     const days = Array.from(dom.window.document.querySelectorAll('body > table > tbody > tr > td'))
       .map(e => e.textContent)
-    if (days[0] === 'ok' || days[0] === 'OK' || days[0] === 'oK') {
+    if (days[0].toLowerCase() === 'ok') {
       days[0] = 'Friday'
     }
-    if (days[1] === 'ok' || days[1] === 'OK' || days[1] === 'oK') {
+    if (days[1].toLowerCase() === 'ok') {
       days[1] = 'Saturday'
     }
-    if (days[2] === 'ok' || days[2] === 'OK' || days[2] === 'oK') {
+    if (days[2].toLowerCase() === 'ok') {
       days[2] = 'Sunday'
     }
     const filteredDays = days.filter(word => word.includes('day'))
@@ -35,10 +35,10 @@ export class CalendarScraper {
   }
 
   /**
-   * Extracts the links on a web page.
+   * Gets the days that are available to all calendars in an array.
    *
-   * @param {Array} calendars - An array of links to calendars.
-   * @returns {string[]} The days that are available for everyone.
+   * @param {Array} calendars - Links to calendars.
+   * @returns {Array} The days that are available for everyone.
    */
   async getAvailableDays (calendars) {
     const days = []
@@ -48,17 +48,8 @@ export class CalendarScraper {
     }
     const daysFlatened = days.flat()
 
-    /**
-     * Check how many times a value of an array occurs.
-     *
-     * @param {Array} arr - The array to analyze.
-     * @param {string} value - The value to count the occurancy of.
-     * @returns {string[]} - The occurances of the values in the Array.
-     */
-    const countOccurrences = (arr, value) => arr.reduce((a, v) => (v === value ? a + 1 : a), 0)
-
     // Check which days are avaialable for everyone.
-    const filteredDays = daysFlatened.filter(day => countOccurrences(daysFlatened, day) === calendars.length)
+    const filteredDays = daysFlatened.filter(day => this.countOccurrences(daysFlatened, day) === calendars.length)
     const availableDays = [...new Set(filteredDays)]
     const daysNumbered = {}
     for (let i = 0; i < availableDays.length; i++) {
@@ -71,6 +62,17 @@ export class CalendarScraper {
       }
     }
     return daysNumbered
+  }
+
+  /**
+   * Check how many times a value of an array occurs.
+   *
+   * @param {Array} array - The array to analyze.
+   * @param {string} value - The value to count the occurancy of.
+   * @returns {Array} - The occurances of the values in the Array.
+   */
+  countOccurrences (array, value) {
+    return array.reduce((a, v) => (v === value ? a + 1 : a), 0)
   }
 
   /**

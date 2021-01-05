@@ -19,7 +19,6 @@
   "license": "MIT",
   "private": true,
   "dependencies": {
-    "fs-extra": "^9.0.1",
     "jsdom": "^16.4.0",
     "node-fetch": "^2.6.1",
     "validator": "^13.1.17"

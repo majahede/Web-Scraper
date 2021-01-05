@@ -18,7 +18,7 @@ export class LinkScraper {
     const dom = new JSDOM(text)
 
     const links = Array.from(dom.window.document.querySelectorAll('a'))
-      .map(aElement => aElement.href)
+      .map(e => e.href)
     return links
   }
 
