@@ -3,17 +3,17 @@ import { LinkScraper } from './linkScraper.js'
 import { CalendarScraper } from './calendar.js'
 import { MovieScraper } from './movies.js'
 import { login } from './login.js'
-import { proposal } from './proposal.js'
+import { suggestions } from './suggestions.js'
 
 /**
  * Starts the applikation.
  */
 const main = async () => {
-  // const url = process.argv[2]
+  const url = process.argv[2]
 
   // get links to the calendar, the cinema and the dinner reservation.
   const linkscraper = new LinkScraper()
-  const startingLinks = await linkscraper.extractLinks('https://cscloud6-127.lnu.se/scraper-site-1/')
+  const startingLinks = await linkscraper.extractLinks(url)
   console.log('Scraping links...OK')
 
   // get links to calendars.
@@ -36,7 +36,8 @@ const main = async () => {
   const tables = await login(startingLinks[2])
   console.log('Scraping possible reservations...OK')
 
-  proposal(availableDays, movies, showtimes, tables)
+  console.log('\nSuggestions\n=========== ')
+  suggestions(availableDays, movies, showtimes, tables)
 }
 
 main()
