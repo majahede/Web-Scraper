@@ -49,7 +49,7 @@ export class CalendarScraper {
     const daysFlatened = days.flat()
 
     // Check which days are avaialable for everyone.
-    const filteredDays = daysFlatened.filter(day => this.countOccurrences(daysFlatened, day) === calendars.length)
+    const filteredDays = daysFlatened.filter(day => this._countOccurrences(daysFlatened, day) === calendars.length)
     const availableDays = [...new Set(filteredDays)]
 
     // Set number to each available day.
@@ -73,7 +73,7 @@ export class CalendarScraper {
    * @param {string} value - The value to count the occurancy of.
    * @returns {Array} - The occurances of the values in the Array.
    */
-  countOccurrences (array, value) {
+  _countOccurrences (array, value) {
     return array.reduce((a, v) => (v === value ? a + 1 : a), 0)
   }
 

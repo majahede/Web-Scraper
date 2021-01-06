@@ -15,9 +15,9 @@ export class MovieScraper {
    * @returns {Array} - An array of movies shown at the cinema.
    */
   async extractMovies (url) {
-    const response = await fetch(url)
-    const text = await response.text()
+    const text = await this._getText(url)
     const dom = new JSDOM(text)
+
     const list = Array.from(dom.window.document.querySelectorAll('#movie > option'))
     const arrayOfMovies = []
 
@@ -50,5 +50,16 @@ export class MovieScraper {
       }
     }
     return showTimes.flat()
+  }
+
+  /**
+   * Gets the plain text from an URL.
+   *
+   * @param {string} url - URL to get text content from.
+   * @returns {string} The content as plain text.
+   */
+  async _getText (url) {
+    const response = await fetch(url)
+    return response.text()
   }
 }
